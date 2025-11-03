@@ -14,6 +14,7 @@ public class index extends Fenster implements KnopfLauscher
 
     // Declaration
     private final Knopf ende, tower1, tower2, tower3;
+    private final BeschriftungsFeld count = new BeschriftungsFeld("Züge: 0", 250, 70, 100, 30);
     private final Knopf disc0 = new Knopf("1");
     private final Knopf disc1 = new Knopf("2");
     private final Knopf disc2 = new Knopf("3");
@@ -32,6 +33,7 @@ public class index extends Fenster implements KnopfLauscher
     int[] positions = {1, 1, 1, 1};
 
     int lastClickedButton;
+    int moveCount = 0;
 
     
     // Constructor
@@ -65,6 +67,7 @@ public class index extends Fenster implements KnopfLauscher
         disc2.setzeGroesse(120,30);
         disc3.setzePosition(x_pos[3], y_pos[3]);
         disc3.setzeGroesse(120,30);
+        count.setzeText("Züge: " + moveCount);
     }
     
     @Override
@@ -130,6 +133,7 @@ public class index extends Fenster implements KnopfLauscher
         if(checkRules(x, y)){
             positions[x-1] = y;
             System.out.println(positions[0]+","+positions[1]+","+positions[2]+","+positions[3]);
+            moveCount++;
             updatePosition(x, y);
         }
     }
