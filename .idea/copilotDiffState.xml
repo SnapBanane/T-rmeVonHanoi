@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/README.md">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/README.md" />
+              <option name="updatedContent" value="# Türme von Hanoi (Towers of Hanoi)&#10;&#10;A Java implementation of the Towers of Hanoi puzzle using the basis library.&#10;&#10;## Authors&#10;- Collien&#10;- Celine&#10;- Timo&#10;- Julius&#10;&#10;## Project Structure&#10;&#10;```&#10;T-rmeVonHanoi/&#10;├── src/main/java/          # Source files&#10;│   ├── Main.java           # Entry point&#10;│   ├── index.java          # Main game logic&#10;│   └── MeinKnopf.java      # Custom button class&#10;├── lib/                    # Libraries&#10;│   └── basis.jar          # Basis GUI library&#10;├── Türme_von_Hanoi/        # Original BlueJ files (kept for reference)&#10;└── build.gradle            # Build configuration&#10;```&#10;&#10;## How to Run in IntelliJ IDEA&#10;&#10;### Option 1: Using IntelliJ's Build System&#10;1. Open the project in IntelliJ IDEA (File &gt; Open &gt; select this folder)&#10;2. Wait for IntelliJ to index the project&#10;3. Right-click on `src/main/java/Main.java`&#10;4. Select &quot;Run 'Main.main()'&quot;&#10;&#10;### Option 2: Using Gradle (if you have it installed)&#10;1. Open Terminal in IntelliJ (Alt+F12)&#10;2. Run: `./gradlew run` (or `gradlew.bat run` on Windows)&#10;&#10;### Option 3: Create Run Configuration&#10;1. Go to Run &gt; Edit Configurations...&#10;2. Click + &gt; Application&#10;3. Name: &quot;Towers of Hanoi&quot;&#10;4. Main class: `Main`&#10;5. Module: `T-rmeVonHanoi`&#10;6. Click OK&#10;7. Click the Run button (green triangle)&#10;&#10;## Development&#10;&#10;The project uses:&#10;- Java 17 or higher&#10;- basis.jar library for GUI components&#10;- Standard Java Swing for graphics&#10;&#10;## Game Instructions&#10;&#10;1. Click on a disc (1-4) to select it&#10;2. Click on a tower button to move the selected disc to that tower&#10;3. You can only place smaller discs on top of larger discs&#10;4. Click &quot;Ende&quot; to exit the game&#10;&#10;## Version&#10;0.0.1&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/basis/Fenster.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/basis/Fenster.java" />
+              <option name="updatedContent" value="package basis;&#10;&#10;import javax.swing.*;&#10;import java.awt.*;&#10;&#10;/**&#10; * Fenster-Klasse für die basis-Bibliothek&#10; */&#10;public class Fenster extends JFrame {&#10;    private JPanel contentPanel;&#10;    &#10;    public Fenster() {&#10;        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);&#10;        setLayout(null);&#10;        setVisible(true);&#10;    }&#10;    &#10;    public void setzeGroesse(int breite, int hoehe) {&#10;        setSize(breite, hoehe);&#10;    }&#10;    &#10;    public void setzeTitel(String titel) {&#10;        setTitle(titel);&#10;    }&#10;    &#10;    public void gibFrei() {&#10;        dispose();&#10;        System.exit(0);&#10;    }&#10;    &#10;    @Override&#10;    public Component add(Component comp) {&#10;        return super.add(comp);&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/basis/Knopf.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/basis/Knopf.java" />
+              <option name="updatedContent" value="package basis;&#10;&#10;import javax.swing.*;&#10;import java.awt.event.ActionEvent;&#10;import java.awt.event.ActionListener;&#10;&#10;/**&#10; * Knopf-Klasse für die basis-Bibliothek&#10; */&#10;public class Knopf extends JButton implements ActionListener {&#10;    private KnopfLauscher lauscher;&#10;    &#10;    public Knopf(String text) {&#10;        super(text);&#10;        addActionListener(this);&#10;    }&#10;    &#10;    public Knopf(String text, int x, int y, int breite, int hoehe) {&#10;        super(text);&#10;        setBounds(x, y, breite, hoehe);&#10;        addActionListener(this);&#10;    }&#10;    &#10;    public void setzeKnopfLauscher(KnopfLauscher l) {&#10;        this.lauscher = l;&#10;    }&#10;    &#10;    public void setzePosition(int x, int y) {&#10;        setLocation(x, y);&#10;    }&#10;    &#10;    public void setzeGroesse(int breite, int hoehe) {&#10;        setSize(breite, hoehe);&#10;    }&#10;    &#10;    @Override&#10;    public void actionPerformed(ActionEvent e) {&#10;        if (lauscher != null) {&#10;            lauscher.bearbeiteKnopfDruck(this);&#10;        }&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/basis/KnopfLauscher.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/basis/KnopfLauscher.java" />
+              <option name="updatedContent" value="package basis;&#10;&#10;/**&#10; * Interface für Knopf-Ereignisse&#10; */&#10;public interface KnopfLauscher {&#10;    void bearbeiteKnopfDruck(Knopf k);&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
