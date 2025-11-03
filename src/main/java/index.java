@@ -29,8 +29,8 @@ public class index extends Fenster implements KnopfLauscher
     int[] heights = {190, 160, 130, 100};
     
     // Which disc is on which tower?
-    int[] towers = {1, 1, 1, 1};
-    
+    int[] positions = {1, 1, 1, 1};
+
     int lastClickedButton;
 
     
@@ -111,12 +111,14 @@ public class index extends Fenster implements KnopfLauscher
      */
     public void updatePosition(int x, int y){
         x_pos[x-1] = t_pos[y-1];
-        y_pos[x-1] = heights[0];
-        for(int i = x; i < 4; i++){
-            if(towers[i] == y){
-                y_pos[x-1] += 30;
-            }
+        // Count how many discs are currently on tower y (excluding the moving disc)
+        int count = 0;
+        for (int i = 0; i < 4; i++) {
+            if (i == x-1) continue;
+            if (positions[i] == y) count++;
         }
+        // Place the moving disc on the appropriate height based on count
+        y_pos[x-1] = heights[count];
         updateGui();
         System.out.println(x_pos[0]+","+x_pos[1]+","+x_pos[2]+","+x_pos[3]);
     }
@@ -126,8 +128,8 @@ public class index extends Fenster implements KnopfLauscher
      */
     public void move(int x, int y){
         if(checkRules(x, y)){
-            towers[x-1] = y;
-            System.out.println(towers[0]+","+towers[1]+","+towers[2]+","+towers[3]);
+            positions[x-1] = y;
+            System.out.println(positions[0]+","+positions[1]+","+positions[2]+","+positions[3]);
             updatePosition(x, y);
         }
     }
@@ -139,15 +141,15 @@ public class index extends Fenster implements KnopfLauscher
      * @return boolean true if the move is valid, false otherwise
      */
     public boolean checkRules(int disc, int r_tower){
-        int s_tower = towers[disc-1];
-        
+        int s_tower = positions[disc-1];
+
         for(int i = disc-1; i >= 1; i--){
-            if(towers[i-1] == s_tower){
+            if(positions[i-1] == s_tower){
                 System.out.println("false");
                 return false;
             }
             
-            if(towers[i-1] == r_tower){
+            if(positions[i-1] == r_tower){
                 System.out.println("false");
                 return false;
             }
