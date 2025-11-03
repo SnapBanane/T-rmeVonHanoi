@@ -2,7 +2,7 @@
  * Klasse index 
  *
  * Collien, Celine, Timo, Julius
- * version 0.0.1
+ * version 0.0.2
  */
 
 // Import
