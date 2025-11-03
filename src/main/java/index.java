@@ -1,40 +1,38 @@
 
-/**
+/*
  * Klasse index 
  *
  * Collien, Celine, Timo, Julius
  * version 0.0.1
  */
 
-//Import
+// Import
 import basis.*;
 import java.awt.*;
 
 public class index extends Fenster implements KnopfLauscher
 {
 
-    //Deklaration
-    private Knopf ende, tower1, tower2, tower3;
-    private Knopf disc1 = new Knopf("1");
-    private Knopf disc2 = new Knopf("2");
-    private Knopf disc3 = new Knopf("3");
-    private Knopf disc4 = new Knopf("4");
-    
-       
+    // Declaration
+    private final Knopf ende, tower1, tower2, tower3;
+    private final Knopf disc1 = new Knopf("1");
+    private final Knopf disc2 = new Knopf("2");
+    private final Knopf disc3 = new Knopf("3");
+    private final Knopf disc4 = new Knopf("4");
+
     //tower positions
-    int[] t_pos = {40, 240, 440};
+    private final int[] t_pos = {40, 240, 440};
     
-    //Disc positions
+    // Disc positions
     int[] d_pos = {40, 40, 40, 40};
     
-    //which disc is on which tower
+    // Which disc is on which tower
     int[] towers = {1, 1, 1, 1};
     
     int lastClickedButton;
 
     
-    // Konstruktor
-    
+    // Constructor
     public index()
     {
         this.setzeGroesse(600,500);
@@ -103,13 +101,23 @@ public class index extends Fenster implements KnopfLauscher
             move(lastClickedButton, 3);
         }
     }
-    
+
+    /**
+     * Update the position of a disc
+     * @param x final x pos
+     * @param y final y pos
+     */
     public void updatePosition(int x, int y){
         d_pos[x-1] = t_pos[y-1];
         updateGui();
         System.out.println(d_pos[0]+","+d_pos[1]+","+d_pos[2]+","+d_pos[3]);
     }
-    
+
+    /**
+     * Move a disc to a tower
+     * @param x
+     * @param y
+     */
     public void move(int x, int y){
         if(checkRules(x, y)){
             towers[x-1] = y;
@@ -117,7 +125,13 @@ public class index extends Fenster implements KnopfLauscher
             updatePosition(x, y);
         }
     }
-    
+
+    /**
+     * Check the rules of the game
+     * @param disc for which disc should the rules be checked
+     * @param r_tower the tower to which the disc should be moved
+     * @return boolean true if the move is valid, false otherwise
+     */
     public boolean checkRules(int disc, int r_tower){
         int s_tower;
         
