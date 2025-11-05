@@ -14,6 +14,7 @@ public class index extends Fenster implements KnopfLauscher
 
     // Declaration
     private final Knopf ende, tower1, tower2, tower3;
+    private final Knopf aiButton; // neuer AI-Knopf
     private final BeschriftungsFeld count = new BeschriftungsFeld("Züge: 0", 250, 70, 100, 30);
     private final Knopf disc0 = new Knopf("1");
     private final Knopf disc1 = new Knopf("2");
@@ -35,7 +36,10 @@ public class index extends Fenster implements KnopfLauscher
     int lastClickedButton;
     int moveCount = 0;
 
-    
+    // Letzte ausgeführte Bewegung: Disc und deren Quell-Tower (wird nach move() gesetzt)
+    int lastMoveDisc = 0;
+    int lastMoveSourceTower = 0;
+
     // Constructor
     public index()
     {
@@ -49,6 +53,10 @@ public class index extends Fenster implements KnopfLauscher
         tower2.setzeKnopfLauscher(this);
         tower3 = new Knopf("macht nix",440,220,120,30);
         tower3.setzeKnopfLauscher(this);
+
+        aiButton = new Knopf("AI", 490, 420, 100, 30); // Position oberhalb "Ende"
+        aiButton.setzeKnopfLauscher(this);
+
         disc0.setzeKnopfLauscher(this);
         disc1.setzeKnopfLauscher(this);
         disc2.setzeKnopfLauscher(this);
@@ -105,6 +113,14 @@ public class index extends Fenster implements KnopfLauscher
         {
             move(lastClickedButton, 3);
         }
+        else if (k == aiButton)
+        {
+            // Starte die AI in einem separaten Thread, damit die GUI nicht blockiert
+            new Thread(() -> {
+                System.out.println("AI: starte ai(this)");
+                new Ai().ai(this);
+            }).start();
+        }
     }
 
     /**
@@ -130,8 +146,13 @@ public class index extends Fenster implements KnopfLauscher
      * Move a disc to a tower
      */
     public void move(int x, int y){
+        int s_tower = positions[x-1]; // Quell-Turm vor der Bewegung
         if(checkRules(x, y)){
             positions[x-1] = y;
+            // speichere die Bewegung (Scheibe und deren vorherigen Turm), damit AI keine Umkehr macht
+            lastMoveDisc = x;
+            lastMoveSourceTower = s_tower;
+
             System.out.println(positions[0]+","+positions[1]+","+positions[2]+","+positions[3]);
             moveCount++;
             updatePosition(x, y);
@@ -147,19 +168,38 @@ public class index extends Fenster implements KnopfLauscher
     public boolean checkRules(int disc, int r_tower){
         int s_tower = positions[disc-1];
 
-        for(int i = disc-1; i >= 1; i--){
-            if(positions[i-1] == s_tower){
-                System.out.println("false");
-                return false;
-            }
-            
-            if(positions[i-1] == r_tower){
-                System.out.println("false");
+        // describe attempted move for logging
+        String moveDesc = "attempted move: disc " + disc + " -> tower " + r_tower + " (from tower " + s_tower + ")";
+
+        // can't move to the same tower
+        if (s_tower == r_tower) {
+            System.out.println(moveDesc + " => false (same tower)");
+            return false;
+        }
+
+        // 1) disc must be the topmost on its source tower:
+        //    no disc with smaller index (i.e. smaller number = smaller size) may be on the same source tower
+        for (int i = 0; i < disc - 1; i++) {
+            if (positions[i] == s_tower) {
+                System.out.println(moveDesc + " => false (not topmost on source, blocked by disc " + (i+1) + ")");
                 return false;
             }
         }
-        
-        System.out.println("true");
+
+        // 2) target tower: find the top disc (smallest index) on r_tower, if any
+        int topDiscOnTarget = Integer.MAX_VALUE;
+        for (int i = 0; i < positions.length; i++) {
+            if (positions[i] == r_tower && (i + 1) < topDiscOnTarget) {
+                topDiscOnTarget = i + 1;
+            }
+        }
+        // if there's a disc on target and it's smaller than the moving disc -> illegal
+        if (topDiscOnTarget != Integer.MAX_VALUE && topDiscOnTarget < disc) {
+            System.out.println(moveDesc + " => false (can't place onto smaller disc " + topDiscOnTarget + ")");
+            return false;
+        }
+
+        System.out.println(moveDesc + " => true");
         return true;
     }
 }
