@@ -8,7 +8,6 @@
 // Import
 import basis.*;
 
-
 public class index extends Fenster implements KnopfLauscher
 {
 
@@ -20,6 +19,7 @@ public class index extends Fenster implements KnopfLauscher
     private final Knopf disc1 = new Knopf("2");
     private final Knopf disc2 = new Knopf("3");
     private final Knopf disc3 = new Knopf("4");
+
 
     //tower positions
     private final int[] t_pos = {40, 240, 440};
@@ -193,8 +193,8 @@ public class index extends Fenster implements KnopfLauscher
                 topDiscOnTarget = i + 1;
             }
         }
-        // if there's a disc on target and it's smaller than the moving disc -> illegal
-        if (topDiscOnTarget != Integer.MAX_VALUE && topDiscOnTarget < disc) {
+        // if there's a disc on target, and it's smaller than the moving disc -> illegal
+        if (topDiscOnTarget < disc) {
             System.out.println(moveDesc + " => false (can't place onto smaller disc " + topDiscOnTarget + ")");
             return false;
         }
