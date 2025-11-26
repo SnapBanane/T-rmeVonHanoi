@@ -131,6 +131,7 @@ public class index extends Fenster implements KnopfLauscher
             moveCount++;
             System.out.println("Move Count: " + moveCount);
             updatePosition(disc, r_tower);
+            if(checkWin(towers)) this.gibFrei();
         }
     }
 
@@ -152,6 +153,13 @@ public class index extends Fenster implements KnopfLauscher
         }
 
         System.out.println("true");
+        return true;
+    }
+    
+    public boolean checkWin(int[] positions) {
+        for(int i = 0; i < positions.length; i++) {
+            if(positions[i] != 3) return false;
+        }
         return true;
     }
 }

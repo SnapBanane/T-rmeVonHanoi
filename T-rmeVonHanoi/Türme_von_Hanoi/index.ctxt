@@ -12,4 +12,6 @@ comment5.params=disc\ r_tower
 comment5.target=void\ move(int,\ int)
 comment6.params=disc\ r_tower
 comment6.target=boolean\ checkRules(int,\ int)
-numComments=7
+comment7.params=positions
+comment7.target=boolean\ checkWin(int[])
+numComments=8
