@@ -36,25 +36,26 @@ public class index extends Fenster implements KnopfLauscher
 
     int lastClickedButton;
 
-    // Konstruktor
+    // Constructor
     public index()
     {
-        System.out.println("Startup-------------------------------------------------------");
-        this.setzeGroesse(600,500);
+        System.out.print("Startup: ");
+        this.setzeGroesse(600, 500);
         this.setzeTitel("index");
-        ende = new Knopf("Ende",490,460,100,30);
+        ende = new Knopf("Ende", 490, 460, 100, 30);
         ende.setzeKnopfLauscher(this);
-        tower1 = new Knopf("tower 1",40,220,120,30);
+        tower1 = new Knopf("tower 1", 40, 220, 120, 30);
         tower1.setzeKnopfLauscher(this);
-        tower2 = new Knopf("tower 2",240,220,120,30);
+        tower2 = new Knopf("tower 2", 240, 220, 120, 30);
         tower2.setzeKnopfLauscher(this);
-        tower3 = new Knopf("tower 3",440,220,120,30);
+        tower3 = new Knopf("tower 3", 440, 220, 120, 30);
         tower3.setzeKnopfLauscher(this);
         disc1.setzeKnopfLauscher(this);
         disc2.setzeKnopfLauscher(this);
         disc3.setzeKnopfLauscher(this);
         disc4.setzeKnopfLauscher(this);
-        count = new ZahlenFeld(240,280,120,30);
+        count = new ZahlenFeld(240, 280, 120, 30);
+        System.out.println("OK");
 
         this.updateGui();
     }
@@ -62,50 +63,38 @@ public class index extends Fenster implements KnopfLauscher
     public void updateGui() 
     {
         disc1.setzePosition(x_pos[0]+45, y_pos[0]);
-        disc1.setzeGroesse(30,30);
+        disc1.setzeGroesse(30, 30);
         disc2.setzePosition(x_pos[1]+30, y_pos[1]);
-        disc2.setzeGroesse(60,30);
+        disc2.setzeGroesse(60, 30);
         disc3.setzePosition(x_pos[2]+15, y_pos[2]);
-        disc3.setzeGroesse(90,30);
+        disc3.setzeGroesse(90, 30);
         disc4.setzePosition(x_pos[3], y_pos[3]);
-        disc4.setzeGroesse(120,30);
+        disc4.setzeGroesse(120, 30);
         count.setzeZahl(moveCount);
     }
 
     @Override
     public void bearbeiteKnopfDruck(Knopf k)
     {
-        if (k ==ende)
-        {
+        if (k == ende) {
             this.gibFrei();
-        } 
-        else if (k ==disc1)
-        {
-            lastClickedButton = 1;
-        } 
-        else if (k ==disc2)
-        {
-            lastClickedButton = 2;
+            return;
         }
-        else if (k ==disc3)
-        {
-            lastClickedButton = 3;
+        
+        Knopf[] discs = { disc1, disc2, disc3, disc4 };
+        for (int i = 0; i < discs.length; i++) {
+            if (k == discs[i]) {
+                lastClickedButton = i + 1;
+                return;
+            }
         }
-        else if (k ==disc4)
-        {
-            lastClickedButton = 4;
-        }
-        else if (k ==tower1)
-        {
-            move(lastClickedButton, 1);
-        }
-        else if (k ==tower2)
-        {
-            move(lastClickedButton, 2);
-        }
-        else if (k ==tower3)
-        {
-            move(lastClickedButton, 3);
+    
+        Knopf[] towersBtn = { tower1, tower2, tower3 };
+        for (int i = 0; i < towersBtn.length; i++) {
+            if (k == towersBtn[i]) {
+                move(lastClickedButton, i + 1);
+                return;
+            }
         }
     }
 
@@ -119,8 +108,6 @@ public class index extends Fenster implements KnopfLauscher
         }
         y_pos[disc-1] = heights[3-q];
         updateGui();
-        System.out.println(y_pos[0]+","+y_pos[1]+","+y_pos[2]+","+y_pos[3]);
-        System.out.println(heights[0]+","+heights[1]+","+heights[2]+","+heights[3]);
     }
 
     public void move(int disc, int r_tower){
@@ -136,23 +123,22 @@ public class index extends Fenster implements KnopfLauscher
     }
 
     public boolean checkRules(int disc, int r_tower){
-        int s_tower;
-
-        s_tower = towers[disc-1];
+        System.out.print("checkRules: ");
+        int s_tower = towers[disc-1];
         
         for(int i = disc-1; i >= 1; i--){
             if(towers[i-1] == s_tower){
-                System.out.println("false -> not topmost disc");
+                System.out.println("FAILED -> not topmost disc");
                 return false;
             }
 
             if(towers[i-1] == r_tower){
-                System.out.println("false -> smaller disc on recieving tower");
+                System.out.println("FAILED -> smaller disc on recieving tower");
                 return false;
             }
         }
 
-        System.out.println("true");
+        System.out.println("OK");
         return true;
     }
     
