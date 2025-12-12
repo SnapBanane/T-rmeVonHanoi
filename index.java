@@ -13,7 +13,8 @@ import java.awt.*;
 public class index extends Fenster implements KnopfLauscher
 {
     //Deklaration
-    private Knopf ende, tower1, tower2, tower3;
+    private Knopf ende, auto;
+    private Knopf tower1, tower2, tower3;
     private Knopf disc1 = new Knopf("1");
     private Knopf disc2 = new Knopf("2");
     private Knopf disc3 = new Knopf("3");
@@ -41,14 +42,16 @@ public class index extends Fenster implements KnopfLauscher
     {
         System.out.print("Startup: ");
         this.setzeGroesse(600, 500);
-        this.setzeTitel("index");
+        this.setzeTitel("TürmeVonHanoi");
         ende = new Knopf("Ende", 490, 460, 100, 30);
         ende.setzeKnopfLauscher(this);
-        tower1 = new Knopf("tower 1", 40, 220, 120, 30);
+        auto = new Knopf("Auto", 20, 460, 100, 30);
+        auto.setzeKnopfLauscher(this);
+        tower1 = new Knopf("1", 40, 220, 120, 30);
         tower1.setzeKnopfLauscher(this);
-        tower2 = new Knopf("tower 2", 240, 220, 120, 30);
+        tower2 = new Knopf("2", 240, 220, 120, 30);
         tower2.setzeKnopfLauscher(this);
-        tower3 = new Knopf("tower 3", 440, 220, 120, 30);
+        tower3 = new Knopf("3", 440, 220, 120, 30);
         tower3.setzeKnopfLauscher(this);
         disc1.setzeKnopfLauscher(this);
         disc2.setzeKnopfLauscher(this);
@@ -56,6 +59,12 @@ public class index extends Fenster implements KnopfLauscher
         disc4.setzeKnopfLauscher(this);
         count = new ZahlenFeld(240, 280, 120, 30);
         System.out.println("OK");
+        
+        // color constructor
+        int bitmask = (255 << 16) | (209 << 8) | 255; // pink
+        tower1.setzeHintergrundFarbe(new Color(bitmask));
+        tower2.setzeHintergrundFarbe(new Color(bitmask));
+        tower3.setzeHintergrundFarbe(new Color(bitmask));
 
         this.updateGui();
     }
@@ -94,6 +103,12 @@ public class index extends Fenster implements KnopfLauscher
             if (k == towersBtn[i]) {
                 move(lastClickedButton, i + 1);
                 return;
+            }
+        }
+        
+        if (k == auto) {
+            for(int i = 0; i < 8; i++) {
+                autoMove();
             }
         }
     }
@@ -143,9 +158,30 @@ public class index extends Fenster implements KnopfLauscher
     }
     
     public boolean checkWin(int[] positions) {
+        System.out.print("checkWin: ");
         for(int i = 0; i < positions.length; i++) {
-            if(positions[i] != 3) return false;
+            if(positions[i] != 3) System.out.println("FAILED -> GAME NOT OVER"); return false;
         }
+        
+        System.out.println("OK");
         return true;
     }
+    
+    public void autoMove() {
+        int currTowerSmall = towers[0];
+        int targetTowerSmall = (currTowerSmall % 3) + 1;
+
+        move(1, targetTowerSmall);
+    
+        for (int d = 2; d <= 4; d++) {
+            for (int t = 1; t <= 3; t++) {
+                if (t == towers[d-1]) continue;
+                if (checkRules(d, t)) {
+                    move(d, t);
+                    return;
+                }
+            }
+        }
+    }
+
 }
